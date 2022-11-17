@@ -3,7 +3,7 @@ import pandas as pd
 import json
 
 primaryKey = "Catalog ."
-searchableColumns = ['Common Name']
+searchableColumns = ['Common Name', 'Scientific Name']
 
 def sortData(df, column, search):
     return df.where(df[column] == search )
@@ -26,10 +26,10 @@ def showdata(collection, search):
         pass #add logic for all csvs later
     csvFilePath = f'./data/{collection}.csv'
     df = pd.read_csv(csvFilePath)
-    for x in searchableColumns:
-        df = sortData(df, x, search)
-    df = df.dropna(how = 'all')
-    parsed = json.loads(df.to_json())
+
+    df1 = df[(df[searchableColumns[0]] == search) | (df[searchableColumns[1]] == search)]
+
+    parsed = json.loads(df1.to_json())
     return parsed
 
 app.run(host='0.0.0.0', port=105)
