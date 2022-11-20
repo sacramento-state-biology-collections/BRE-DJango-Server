@@ -1,0 +1,3 @@
+[submodule "static"]
+	path = static
+	url = https://github.com/sacramento-state-biology-collections/BRE
