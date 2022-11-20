@@ -11,7 +11,11 @@ def sortData(df, column, search):
     return df.where(df[column] == search )
 
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static')
+
+@app.route('/<path:path>')
+def static_file(path):
+    return app.send_static_file(path)
 
 @app.route('/api/v1/<collection>', methods=['GET'])
 def alldata(collection):
