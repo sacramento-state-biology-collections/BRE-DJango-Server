@@ -1,4 +1,4 @@
-##port 105
+#port 105
 
 from flask import Flask
 import pandas as pd
@@ -7,22 +7,22 @@ import json
 primaryKey = "Catalog ."
 searchableColumns = ['Common Name', 'Scientific Name']
 
-def sortData(df, column, search):
+def SortData(df, column, search):
     return df.where(df[column] == search )
 
 
 app = Flask(__name__, static_url_path='/static')
 
 @app.route('/')
-def root():
+def Root():
     return app.send_static_file('index.html')
 
 @app.route('/<path:path>')
-def static_file(path):
+def StaticFile(path):
     return app.send_static_file(path)
 
 @app.route('/api/v1/<collection>', methods=['GET'])
-def alldata(collection):
+def AllData(collection):
     if collection == 'all':
         pass #add logic for all csvs later
     csvFilePath = f'./data/{collection}.csv'
@@ -31,7 +31,7 @@ def alldata(collection):
     return parsed
 
 @app.route('/api/v1/<collection>/<search>', methods=['GET'])
-def showdata(collection, search):
+def ShowData(collection, search):
     if collection == 'all':
         pass #add logic for all csvs later
     csvFilePath = f'./data/{collection}.csv'
