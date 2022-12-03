@@ -1,9 +1,13 @@
 # Sacramento State Biology Collections
 
 <p align="center">
-    <img src="images/icons/manifest-icon-512.maskable.png"
+    <img src="images/icons/manifest-icon-512.maskable.png"><br>
+    <strong>Biology Research Engine by the Glueware Gremlins</strong>
 </p>
 
+## Team Members:
+
+---
 
 - [Brian Almaguer](https://github.com/BalmaBrian)
   - **Email:** Balmaguer@csus.edu
@@ -29,25 +33,25 @@
 
 ---
 
-Biology Department at Sacramento State University - At CSU Sacramento they have ~7000 collections and they have to manage them digitally. They asked us to create a PWA application that will allow them to catalog search up and share there resources more effectively.
+The California State University of Sacramento's Biology Department has ~7000 collections and they want a way to manage them digitally. They asked us to create an easily accessible and reliable database software that would allow both faculty members and students of the school to edit or review the university's data collections, laboratories and museums.
 
 ## Solution:
 
 ---
 
-Creating a website that can turn into an application and run on the user device which allows them to interact with the Biology Collections according to there needs and clearance.
+We will create a website where users can search through the databases and the faculty can sign in and modify the collection data. It will be a progressive web app (PWA), which means the website can be downloaded by anyone and use it offline.
 
 ## Prototypes:
 
 ---
 
 <p align="center">
-    <img src="images/mockups/search-mockup-1.png">
-    <img src="images/mockups/search-mockup-2.png">
-    <img src="images/mockups/search-mockup-3.png">
-    <img src="images/mockups/login-mockup-1.png">
-    <img src="images/mockups/login-mockup-2.png">
-    <img src="images/mockups/login-mockup-3.png">
+    <img src="images/mockups/search-mockup-1.png" style="width: 70%; height: auto">
+    <img src="images/mockups/search-mockup-2.png" style="width: 70%; height: auto">
+    <img src="images/mockups/search-mockup-3.png" style="width: 70%; height: auto">
+    <img src="images/mockups/login-mockup-1.png" style="width: 70%; height: auto">
+    <img src="images/mockups/login-mockup-2.png" style="width: 70%; height: auto">
+    <img src="images/mockups/login-mockup-3.png" style="width: 70%; height: auto">
 </p>
 
 ## Timeline:
@@ -86,7 +90,7 @@ Finally, adding the abil
 
 ## Deployment:
 
-___
+---
 
 ## Developer's Instructions:
 
