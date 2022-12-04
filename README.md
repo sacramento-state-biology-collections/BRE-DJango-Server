@@ -60,7 +60,7 @@ We will create a website where users can search through the databases and the fa
 
 Sprint0-Project Preparation: Our team created meeting times based on each other schedules. We met with client to discuss project requiremets and to fill out the project proposal. Acquired the mammals database from the client.
 
-Sprint1: We set up jira and started creat
+Sprint1: We set up our Jira and Github accounts. We practiced using jira and making git commits. We began comming up with user stories for the next sprint.
 
 Sprint2: We started discussing how to implement indexdb and service workers as well as clean the database. We made mockups. 
 
