@@ -33,7 +33,7 @@
 
 ---
 
-The California State University of Sacramento's Biology Department has ~7000 collections and they want a way to manage them digitally. They asked us to create an easily accessible and reliable database software that would allow both faculty members and students of the school to edit or review the university's data collections, laboratories and museums.
+The California State University of Sacramento's Biology Department has ~7000 collections and they want a way to manage them digitally. They asked us to create an easily accessible and reliable database software that would allow both faculty members and students of the school to edit or review the university's data collections, laboratories, and museums.
 
 ## Solution:
 
@@ -58,9 +58,9 @@ We will create a website where users can search through the databases and the fa
 
 ---
 
-Sprint0-Project Preparation: Our team created meeting times based on each other schedules. We met with client to discuss project requiremets and to fill out the project proposal. Acquired the mammals database from the client.
+Sprint0-Project Preparation: Our team created meeting times based on each other's schedules. We met with our client to discuss project requirements and to fill out the project proposal. Acquired the mammals database from the client.
 
-Sprint1: We set up our Jira and Github accounts. We practiced using jira and making git commits. We began comming up with user stories for the next sprint.
+Sprint1: We set up our Jira and Github accounts. We practiced using jira and making git commits. We began coming up with user stories for the next sprint.
 
 Sprint2: We started discussing how to implement indexdb and service workers as well as clean the database. We made mockups. 
 
