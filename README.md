@@ -10,11 +10,11 @@
 ---
 
 - [Brian Almaguer](https://github.com/BalmaBrian)
-  - **Email:** Balmaguer@csus.edu
+  - **Email:** BAlmaguer@csus.edu
 - [Joseph May](https://github.com/jo3y49)
-  - **Email:** Josephmay@csus.edu
+  - **Email:** JosephMay@csus.edu
 - [Lauren Prather](https://github.com/lprather)
-  - **Email:** Lprather@csus.edu
+  - **Email:** LPrather@csus.edu
 - [Ivan Yuen](https://github.com/IvanYuen711)
   - **Email:** IvanYuen@csus.edu
 - [Kelly Bringino](https://github.com/KellyJBringino)
@@ -24,7 +24,7 @@
 - [Tawheed Bayaz](https://github.com/TawheedB)
   - **Email:** TawheedBayaz@csus.edu
 - [Evan Boswell](https://github.com/EvanBoswell)
-  - **Email:** eboswell2@csus.edu
+  - **Email:** EBoswell2@csus.edu
 - [Lukas Dolansky](https://github.com/LukasDolansky)
   - **Email:** LukasDolansky@csus.edu
 
@@ -57,7 +57,7 @@ We will create a website where users can search through the databases and the fa
 
 ---
 
-Sprint 0-Project Preparation: Our team created meeting times based on each other's schedules. We met with our client to discuss project requirements and to fill out the project proposal. Acquired the mammals database from the client.
+Sprint 0 - Project Preparation: Our team created meeting times based on each other's schedules. We met with our client to discuss project requirements and to fill out the project proposal. Acquired the mammals database from the client.
 
 Sprint 1: We set up our Jira and Github accounts. We practiced using jira and making git commits. We began coming up with user stories for the next sprint.
 
