@@ -17,7 +17,7 @@
   - **Email:** Lprather@csus.edu
 - [Ivan Yuen](https://github.com/IvanYuen711)
   - **Email:** IvanYuen@csus.edu
-- [Kelly Bringino](https://https://github.com/KellyJBringino)
+- [Kelly Bringino](https://github.com/KellyJBringino)
   - **Email:** KellyBringino@csus.edu
 - [Leonardo Anguiano](https://github.com/languiano805)
   - **Email:** LAnguiano@csus.edu
@@ -27,7 +27,6 @@
   - **Email:** eboswell2@csus.edu
 - [Lukas Dolansky](https://github.com/LukasDolansky)
   - **Email:** LukasDolansky@csus.edu
-
 
 ## Background:
 
@@ -62,7 +61,7 @@ Sprint 0-Project Preparation: Our team created meeting times based on each other
 
 Sprint 1: We set up our Jira and Github accounts. We practiced using jira and making git commits. We began coming up with user stories for the next sprint.
 
-Sprint 2: We started discussing how to implement indexdb and service workers as well as clean the database. We made mockups. 
+Sprint 2: We started discussing how to implement indexdb and service workers as well as clean the database. We made mockups.
 
 Sprint 3: We completed our MVP. We began implementing the service worker.
 
@@ -77,7 +76,7 @@ Sprint 6: Finalize and enable everything to make the site match CRUD functionali
 
 Sprint 7: Add security systems and verification for users so that only authorized personnel have the ability to edit the data.
 
-Sprint 8: Add pictures on top of the systems in place to support images of specimens. This means that we need to be able to CRUD images and store them as well as implement the optional download of images. 
+Sprint 8: Add pictures on top of the systems in place to support images of specimens. This means that we need to be able to CRUD images and store them as well as implement the optional download of images.
 
 Sprint 9: Make documentation for the technologies we used so we can give this project to the biology department and they can understand how it all works.
 
