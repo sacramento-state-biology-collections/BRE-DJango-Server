@@ -1,4 +1,4 @@
-CREATE TABLE mammals_Collection
+CREATE TABLE IF NOT EXISTS mammals_Collection
 (
     catalog char(4) PRIMARY KEY,
     common_name TEXT,
@@ -7,7 +7,7 @@ CREATE TABLE mammals_Collection
     drawer TEXT
 );
 
-CREATE TABLE herps_Collection
+CREATE TABLE IF NOT EXISTS herps_Collection
 (
     catalog char(4) PRIMARY KEY,
     common_name TEXT,
@@ -16,7 +16,7 @@ CREATE TABLE herps_Collection
     drawer TEXT
 );
 
-CREATE TABLE insects_Collection
+CREATE TABLE IF NOT EXISTS insects_Collection
 (
     catalog char(4) PRIMARY KEY,
     common_name TEXT,
@@ -25,7 +25,7 @@ CREATE TABLE insects_Collection
     drawer TEXT
 );
 
-CREATE TABLE fish_Collection
+CREATE TABLE IF NOT EXISTS fish_Collection
 (
     catalog char(4) PRIMARY KEY,
     common_name TEXT,
@@ -34,7 +34,7 @@ CREATE TABLE fish_Collection
     drawer TEXT
 );
 
-CREATE TABLE vivarium_Collection
+CREATE TABLE IF NOT EXISTS vivarium_Collection
 (
     catalog char(4) PRIMARY KEY,
     common_name TEXT,
@@ -43,7 +43,7 @@ CREATE TABLE vivarium_Collection
     drawer TEXT
 );
 
-CREATE TABLE green_House_Collection
+CREATE TABLE IF NOT EXISTS green_House_Collection
 (
     catalog char(4) PRIMARY KEY,
     common_name TEXT,
@@ -52,7 +52,7 @@ CREATE TABLE green_House_Collection
     drawer TEXT
 );
 
-CREATE TABLE arboretum_Collection
+CREATE TABLE IF NOT EXISTS arboretum_Collection
 (
     catalog char(4) PRIMARY KEY,
     common_name TEXT,
@@ -61,25 +61,7 @@ CREATE TABLE arboretum_Collection
     drawer TEXT
 );
 
-CREATE TABLE herbarium_Collection
-(
-    catalog char(4) PRIMARY KEY,
-    common_name TEXT,
-    scientific_name TEXT,
-    prep_type TEXT,
-    drawer TEXT
-);
-
-CREATE TABLE ectotherm_Collection
-(
-    catalog char(4) PRIMARY KEY,
-    common_name TEXT,
-    scientific_name TEXT,
-    prep_type TEXT,
-    drawer TEXT
-);
-
-CREATE TABLE vertebrate_Collection
+CREATE TABLE IF NOT EXISTS herbarium_Collection
 (
     catalog char(4) PRIMARY KEY,
     common_name TEXT,
