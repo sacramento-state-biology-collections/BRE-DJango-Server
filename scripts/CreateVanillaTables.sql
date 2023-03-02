@@ -69,21 +69,3 @@ CREATE TABLE herbarium_Collection
     prep_type TEXT,
     drawer TEXT
 );
-
-CREATE TABLE ectotherm_Collection
-(
-    catalog char(4) PRIMARY KEY,
-    common_name TEXT,
-    scientific_name TEXT,
-    prep_type TEXT,
-    drawer TEXT
-);
-
-CREATE TABLE vertebrate_Collection
-(
-    catalog char(4) PRIMARY KEY,
-    common_name TEXT,
-    scientific_name TEXT,
-    prep_type TEXT,
-    drawer TEXT
-);
