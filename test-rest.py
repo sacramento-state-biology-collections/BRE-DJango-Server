@@ -139,4 +139,21 @@ def PostXlsx(database):
         return "Failed", 500
 
 
+@app.route('/api/<collection>/<column>/<search>')
+def search_result(collection, column, search):
+    connection = pg.connect(
+        host=settings["host"],
+        user=settings["user"],
+        password=settings["password"],
+        port=settings["port"],
+        database=settings["database"]
+    )
+    cursor = connection.cursor(cursor_factory=RealDictCursor)
+    if(request.method == 'GET'):
+        cursor.execute(f"SELECT common_name, scientific_name, prep_type, drawer FROM {collection} WHERE {column} LIKE '%{search}%'")
+        data = cursor.fetchall()
+        cursor.close()
+        connection.close()
+        return json.dumps(data)
+
 app.run(host='0.0.0.0', port=9001)
