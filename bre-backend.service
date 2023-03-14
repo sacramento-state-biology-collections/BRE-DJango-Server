@@ -1,0 +1,12 @@
+[Unit]
+Description=Service for REST API
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3.9 /home/grem/rest.py
+User=grem
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
