@@ -1,3 +1,4 @@
+import pathlib as path
 from flask import Flask, send_file, request
 import psycopg2 as pg
 from psycopg2.extras import RealDictCursor
@@ -37,7 +38,7 @@ def Root():
     cursor.close()
     # Close the connection
     connection.close()
-    # Send data as json 
+    # Send data as json
     return json.dumps(data)
 
 
@@ -154,5 +155,23 @@ def search_result(collection, column, search):
     cursor.close()
     connection.close()
     return json.dumps(data)
+
+@app.route('/api/file/<image>', methods=['POST', 'GET'])
+def upload_file(image):
+    ext = ['.jpg', '.jpeg']
+    parent_dir = "~/"
+    if request.method == 'POST':
+        #check file extension
+        if image.endswith(tuple(ext)) == False:
+            return "File extension not allowed", 500
+        if 'file' not in request.files:
+            return "No file part", 404
+        f = request.files['file']
+        f.save(os.path.join(parent_dir, f.filename))
+        return "file saved", 200
+    elif request.method == 'GET':
+        #TODO get file from server and send it to client
+        filepath = f'uploads/{image}'
+        return send_file(f'{filepath}', as_attachment=True)
 
 app.run(host='0.0.0.0', port=9001)
