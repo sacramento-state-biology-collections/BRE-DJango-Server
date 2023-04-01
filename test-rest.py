@@ -6,6 +6,7 @@ from flask_cors import CORS
 import os
 import json
 import pandas as pd
+import traceback
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
@@ -159,19 +160,20 @@ def search_result(collection, column, search):
 @app.route('/api/file/<image>', methods=['POST', 'GET'])
 def upload_file(image):
     ext = ['.jpg', '.jpeg']
-    parent_dir = "~/"
+    parent_dir = "/home/vib1240/Development"
     if request.method == 'POST':
         #check file extension
         if image.endswith(tuple(ext)) == False:
             return "File extension not allowed", 500
         if 'file' not in request.files:
-            return "No file part", 404
+            return "no file found", 505
         f = request.files['file']
+        print(f)
         f.save(os.path.join(parent_dir, f.filename))
         return "file saved", 200
     elif request.method == 'GET':
         #TODO get file from server and send it to client
-        filepath = f'uploads/{image}'
+        filepath = f'{os.path.join(parent_dir, image)}'
         return send_file(f'{filepath}', as_attachment=True)
 
 app.run(host='0.0.0.0', port=9001)
