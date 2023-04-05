@@ -155,4 +155,20 @@ def search_result(collection, column, search):
     connection.close()
     return json.dumps(data)
 
+@app.route('/api/<collection>/<id>', methods=['GET'])
+def all_specimen_data(collection, id):
+    connection = pg.connect(
+        host=settings["host"],
+        user=settings["user"],
+        password=settings["password"],
+        port=settings["port"],
+        database=settings["database"]
+    )
+    cursor = connection.cursor(cursor_factory=RealDictCursor)
+    cursor.execute(f"SELECT * FROM {collection} WHERE catalog='{id}'")
+    data = cursor.fetchall()
+    cursor.close()
+    connection.close()
+    return json.dumps(data)
+
 app.run(host='0.0.0.0', port=9001)
