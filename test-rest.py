@@ -5,7 +5,10 @@ from flask_cors import CORS
 import os
 import json
 import pandas as pd
-from Crypto.PublicKey import ECC
+import base64 
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import unpad
+
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
@@ -16,7 +19,7 @@ settings = {
     "port": "5432",
     "database": "biologydb",
 }
-key = ECC.generate(curve='P-256')
+key = ''
 
 @app.route('/api/all')
 def Root():
@@ -156,32 +159,31 @@ def search_result(collection, column, search):
     connection.close()
     return json.dumps(data)
 
-@app.route('/login', methods=['GET', 'POST'])
+# ignore cors for now
+@app.route('/api/login', methods=['POST'])
 def login():
-    if request.method == 'POST':
-        connection = pg.connect(
+    data = request.get_json()
+    tmp_key = key
+    enc = base64.b64decode(data['password'])
+    cipher = AES.new(tmp_key.encode('utf-8'), AES.MODE_ECB)
+    password = unpad(cipher.decrypt(enc),16).decode('utf-8')
+    username = data['username']
+    # TODO: check if user exists in database
+    connection = pg.connect(
         host=settings["host"],
         user=settings["user"],
         password=settings["password"],
         port=settings["port"],
         database=settings["database"]
-        )
-        cursor = connection.cursor(cursor_factory=RealDictCursor)
-        #! TODO decrypt username and password
-        username = 0
-        password = 0
-        #! END TODO
-        cursor.execute(f"SELECT * FROM users WHERE username = '{username}' AND password = '{password}'")
-        data = cursor.fetchall()
-        cursor.close()
-        connection.close()
-        if len(data) == 0:
-            return "Failed", 500
-        else:
-            return "Success", 200
-    elif request.method == 'GET': #int(key.public_key().export_key(format='raw'))
-        pub_key = {'public_key': {"type": "Buffer", "data": [x for x in key.public_key().export_key(format='raw')]}}
-        return json.dumps(pub_key)
+    )
+    cursor = connection.cursor(cursor_factory=RealDictCursor)
+    cursor.execute(f"SELECT * FROM users WHERE username = '{username}' AND password = '{password}'")
+    data = cursor.fetchall()
+    cursor.close()
+    connection.close()
+    if len(data) == 0:
+        return json.dumps({'message': 'Failed'}), 500
+    return json.dumps({'message': 'Success'}), 200
 
 
 app.run(host='0.0.0.0', port=9001)
