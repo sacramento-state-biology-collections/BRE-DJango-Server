@@ -69,3 +69,14 @@ CREATE TABLE IF NOT EXISTS herbarium_Collection
     prep_type TEXT,
     drawer TEXT
 );
+
+CREATE TABLE IF NOT EXISTS users
+(
+    username TEXT PRIMARY KEY,
+    password TEXT,
+    email TEXT,
+    first_name TEXT,
+    last_name TEXT
+);
+
+INSERT INTO users (username, password, email, first_name, last_name) VALUES ('admin', 'f7b539a46ea30c6cac6789eeb6ddaf0a', 'admin@localhost', 'Admin', 'Admin');
