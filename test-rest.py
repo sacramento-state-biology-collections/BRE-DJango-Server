@@ -5,10 +5,10 @@ from flask_cors import CORS
 import os
 import json
 import pandas as pd
+from subprocess import Popen, PIPE
 import base64 
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import unpad
-
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
@@ -41,7 +41,7 @@ def Root():
     cursor.close()
     # Close the connection
     connection.close()
-    # Send data as json 
+    # Send data as json
     return json.dumps(data)
 
 
@@ -53,11 +53,11 @@ def ServerHealth():
 @app.route('/api/status/postgres')
 def PostgresHealth():
     if pg.connect(
-        host=settings["host"],
-        user=settings["user"],
-        password=settings["password"],
-        port=settings["port"],
-        database=settings["database"]
+            host=settings["host"],
+            user=settings["user"],
+            password=settings["password"],
+            port=settings["port"],
+            database=settings["database"]
     ):
         return "Success", 200
     else:
@@ -98,7 +98,7 @@ def PostXlsx(database):
         return "No file part", 500
     file = request.files['file']
     file.save(os.path.join('uploads', file.filename))
-    #TODO BEGIN udate database from xlsx file
+    # TODO BEGIN udate database from xlsx file
     dataframe = pd.read_excel(f'uploads/{database}.xlsx')
     columns = dataframe.columns
     sql_primary_key = f'{columns[0]} varchar(4) PRIMARY KEY,'
@@ -136,7 +136,7 @@ def PostXlsx(database):
     connection.commit()
     connection.close()
     status = 'Success'
-    #! END update database from xlsx file
+    # !END update database from xlsx file
     if status == 'Success':
         return "Success", 200
     elif status == 'Failed':
@@ -153,13 +153,53 @@ def search_result(collection, column, search):
         database=settings["database"]
     )
     cursor = connection.cursor(cursor_factory=RealDictCursor)
-    cursor.execute(f"SELECT common_name,scientific_name,prep_type,drawer,catalog FROM {collection} WHERE {column} LIKE '%{search}%'")
+    cursor.execute(f"SELECT * FROM {collection} WHERE {column} LIKE '%{search}%'")
     data = cursor.fetchall()
     cursor.close()
     connection.close()
     return json.dumps(data)
 
-# ignore cors for now
+@app.route('/api/file/<collection>/<catalog>/<image>', methods=['POST', 'GET'])
+def upload_file(catalog: str, collection: str, image):
+    # Connect to database
+    connection = pg.connect(
+        host=settings["host"],
+        user=settings["user"],
+        password=settings["password"],
+        port=settings["port"],
+        database=settings["database"]
+    )
+    cursor = connection.cursor(cursor_factory=RealDictCursor)
+    # TODO update parent_dir variable to set correct folder pwd in linode
+    parent_dir = "~/"
+    # POST protocol
+    if request.method == 'POST':
+        ext = ['.jpg', '.jpeg']
+        # check file extension
+        if not image.endswith(tuple(ext)):
+            return "File extension not allowed", 500
+        if 'file' not in request.files:
+            return "no file found", 505
+        f = request.files['file']
+        print(f)
+        f.save(os.path.join(parent_dir, f.filename))
+        cursor.execute(f"UPDATE {collection} SET file_name = {f.filename} WHERE catalog = '{catalog}'; ")
+        cursor.close()
+        connection.close()
+        return "file saved", 200
+
+    # GET protocol
+    elif request.method == 'GET':
+        # TODO: get file from server and send it to client
+        cursor.execute(f'SELECT file_name from {collection} WHERE catalog LIKE ' % {catalog} % ' ')
+        filen = cursor.fetchall()
+        pwd = Popen(f"find {parent_dir} -name {filen} 2>/dev/null", shell=True, stdout=PIPE).communicate()[0]
+        pwd = pwd.decode('utf-8')
+        cursor.close()
+        connection.close()
+        return send_file(pwd, as_attachment=True), 200
+
+
 @app.route('/api/login', methods=['POST'])
 def login():
     data = request.get_json()
