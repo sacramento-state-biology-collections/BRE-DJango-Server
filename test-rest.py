@@ -149,39 +149,7 @@ def search_result(collection, column, search):
         database=settings["database"]
     )
     cursor = connection.cursor(cursor_factory=RealDictCursor)
-    cursor.execute(f"SELECT common_name,scientific_name,prep_type,drawer,catalog FROM {collection} WHERE {column} LIKE '%{search}%'")
-    data = cursor.fetchall()
-    cursor.close()
-    connection.close()
-    return json.dumps(data)
-
-@app.route('/api/<collection>/<id>', methods=['GET'])
-def all_specimen_data(collection, id):
-    connection = pg.connect(
-        host=settings["host"],
-        user=settings["user"],
-        password=settings["password"],
-        port=settings["port"],
-        database=settings["database"]
-    )
-    cursor = connection.cursor(cursor_factory=RealDictCursor)
-    cursor.execute(f"SELECT * FROM {collection} WHERE catalog='{id}'")
-    data = cursor.fetchall()
-    cursor.close()
-    connection.close()
-    return json.dumps(data)
-
-@app.route('/api/card/<collection>/<id>', methods=['GET'])
-def card_data(collection, id):
-    connection = pg.connect(
-        host=settings["host"],
-        user=settings["user"],
-        password=settings["password"],
-        port=settings["port"],
-        database=settings["database"]
-    )
-    cursor = connection.cursor(cursor_factory=RealDictCursor)
-    cursor.execute(f"SELECT common_name,scientific_name,prep_type,drawer,catalog FROM {collection} WHERE catalog='{id}'")
+    cursor.execute(f"SELECT * FROM {collection} WHERE {column} LIKE '%{search}%'")
     data = cursor.fetchall()
     cursor.close()
     connection.close()
