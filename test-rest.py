@@ -225,5 +225,22 @@ def login():
         return json.dumps({'message': 'Failed'}), 500
     return json.dumps({'message': 'Success'}), 200
 
+@app.route('/api/<collection>', methods=['GET'])
+def get_collection(collection):
+    connection = pg.connect(
+        host=settings["host"],
+        user=settings["user"],
+        password=settings["password"],
+        port=settings["port"],
+        database=settings["database"]
+    )
+    cursor = connection.cursor(cursor_factory=RealDictCursor)
+    cursor.execute(f"SELECT catalog,common_name FROM {collection}")
+    data = cursor.fetchall()
+    cursor.close()
+    connection.close()
+    print(data)
+    return json.dumps(data)
+
 
 app.run(host='0.0.0.0', port=9001)
