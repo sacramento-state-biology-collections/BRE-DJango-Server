@@ -6,7 +6,7 @@ import os
 import json
 import pandas as pd
 from subprocess import Popen, PIPE
-import base64 
+import base64
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import unpad
 
@@ -19,7 +19,7 @@ settings = {
     "port": "5432",
     "database": "biologydb",
 }
-key = ''
+key = 'cscgluewaregrems'
 
 @app.route('/api/all')
 def Root():
@@ -83,8 +83,8 @@ def GetXlsx(database):
     cursor.close()
     connection.close()
     dataframe = pd.DataFrame(data)
-    dataframe.to_excel(f'uploads/{database}.xlsx', index=False)
-    filepath = f'uploads/{database}.xlsx'
+    dataframe.to_excel(f'/home/grem/uploads/{database}.xlsx', index=False)
+    filepath = f'/home/grem/uploads/{database}.xlsx'
     # END creation of xlsx file from database
     return send_file(f'{filepath}', as_attachment=True)
 
@@ -239,8 +239,6 @@ def get_collection(collection):
     data = cursor.fetchall()
     cursor.close()
     connection.close()
-    print(data)
-    return json.dumps(data)
-
+    return json.dumps(data), 200
 
 app.run(host='0.0.0.0', port=9001)
