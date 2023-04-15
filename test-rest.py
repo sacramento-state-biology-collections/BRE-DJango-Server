@@ -6,16 +6,16 @@ import os
 import json
 import pandas as pd
 from subprocess import Popen, PIPE
-import base64 
-from Crypto.Cipher import AES
-from Crypto.Util.Padding import unpad
+# import base64 
+# from Crypto.Cipher import AES
+# from Crypto.Util.Padding import unpad
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 settings = {
-    "host": "",
+    "host": "50.116.3.37",
     "user": "postgres",
-    "password": "",
+    "password": "glueware@grems",
     "port": "5432",
     "database": "biologydb",
 }
@@ -142,6 +142,21 @@ def PostXlsx(database):
     elif status == 'Failed':
         return "Failed", 500
 
+@app.route('/api/<collection>', methods=['GET'])
+def search_all(collection):
+    connection = pg.connect(
+        host=settings["host"],
+        user=settings["user"],
+        password=settings["password"],
+        port=settings["port"],
+        database=settings["database"]
+    )
+    cursor = connection.cursor(cursor_factory=RealDictCursor)
+    cursor.execute(f"SELECT * FROM {collection}")
+    data = cursor.fetchall()
+    cursor.close()
+    connection.close()
+    return json.dumps(data)
 
 @app.route('/api/<collection>/<column>/<search>', methods=['GET'])
 def search_result(collection, column, search):
