@@ -168,7 +168,7 @@ def search_result_multirow(collection, search):
         database=settings["database"]
     )
     cursor = connection.cursor(cursor_factory=RealDictCursor)
-    cursor.execute(f"SELECT * FROM {collection} WHERE common_name LIKE '%{search}%' OR scientific_name LIKE '%{search}%'")
+    cursor.execute(f"SELECT * FROM {collection} WHERE common_name ILIKE '%{search}%' OR scientific_name ILIKE '%{search}%'")
     data = cursor.fetchall()
     cursor.close()
     connection.close()
