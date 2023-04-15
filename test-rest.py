@@ -13,9 +13,9 @@ from subprocess import Popen, PIPE
 app = Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 settings = {
-    "host": "50.116.3.37",
+    "host": "",
     "user": "postgres",
-    "password": "glueware@grems",
+    "password": "",
     "port": "5432",
     "database": "biologydb",
 }
@@ -153,6 +153,22 @@ def search_all(collection):
     )
     cursor = connection.cursor(cursor_factory=RealDictCursor)
     cursor.execute(f"SELECT * FROM {collection}")
+    data = cursor.fetchall()
+    cursor.close()
+    connection.close()
+    return json.dumps(data)
+
+@app.route('/api/<collection>/<search>', methods=['GET'])
+def search_result_multirow(collection, search):
+    connection = pg.connect(
+        host=settings["host"],
+        user=settings["user"],
+        password=settings["password"],
+        port=settings["port"],
+        database=settings["database"]
+    )
+    cursor = connection.cursor(cursor_factory=RealDictCursor)
+    cursor.execute(f"SELECT * FROM {collection} WHERE common_name LIKE '%{search}%' OR scientific_name LIKE '%{search}%'")
     data = cursor.fetchall()
     cursor.close()
     connection.close()
