@@ -142,7 +142,7 @@ def PostXlsx(database):
     elif status == 'Failed':
         return "Failed", 500
 
-@app.route('/api/<collection>', methods=['GET'])
+@app.route('/api/<collection>/', methods=['GET'])
 def search_all(collection):
     connection = pg.connect(
         host=settings["host"],
