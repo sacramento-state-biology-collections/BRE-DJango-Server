@@ -6,9 +6,9 @@ import os
 import json
 import pandas as pd
 from subprocess import Popen, PIPE
-# import base64 
-# from Crypto.Cipher import AES
-# from Crypto.Util.Padding import unpad
+import base64 
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import unpad
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
