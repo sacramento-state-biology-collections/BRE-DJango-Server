@@ -15,8 +15,8 @@ cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 settings = {
     "host": "",
     "user": "postgres",
-    "password": "",
-    "port": "5432",
+    "password": "glueware@grems",
+    "port": "",
     "database": "biologydb",
 }
 key = ''
@@ -153,6 +153,22 @@ def search_all(collection):
     )
     cursor = connection.cursor(cursor_factory=RealDictCursor)
     cursor.execute(f"SELECT * FROM {collection}")
+    data = cursor.fetchall()
+    cursor.close()
+    connection.close()
+    return json.dumps(data)
+
+@app.route('/api/edit/<collection>', methods=['GET'])
+def sea(collection):
+    connection = pg.connect(
+        host=settings["host"],
+        user=settings["user"],
+        password=settings["password"],
+        port=settings["port"],
+        database=settings["database"]
+    )
+    cursor = connection.cursor(cursor_factory=RealDictCursor)
+    cursor.execute(f"SELECT catalog,common_name FROM {collection}")
     data = cursor.fetchall()
     cursor.close()
     connection.close()
