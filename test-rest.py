@@ -10,7 +10,7 @@ import base64
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import unpad
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static')
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 settings = {
     "host": "",
@@ -272,5 +272,14 @@ def login():
         return json.dumps({'message': 'Failed'}), 500
     return json.dumps({'message': 'Success'}), 200
 
+
+@app.route('/api/testing', methods=['GET'])
+def testing():
+    return app.send_static_file('test.html')
+
+
+@app.route('/<path>:<path>')
+def StaticFile(path):
+    return app.send_static_file(path)
 
 app.run(host='0.0.0.0', port=9001)
