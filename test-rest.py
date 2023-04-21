@@ -1,4 +1,4 @@
-from flask import Flask, send_file, request
+from flask import Flask, send_file, request, redirect, url_for
 import psycopg2 as pg
 from psycopg2.extras import RealDictCursor
 from flask_cors import CORS
@@ -7,8 +7,9 @@ import json
 import pandas as pd
 from subprocess import Popen, PIPE
 import base64
-from Crypto.Cipher import AES
-from Crypto.Util.Padding import unpad
+import qrcode as qr
+from crypto.Cipher import AES
+from crypto.Util.Padding import unpad
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
@@ -20,6 +21,13 @@ settings = {
     "database": "biologydb",
 }
 key = ''
+
+qr_code = qr.QRCode(
+    version=1,
+    error_correction=qr.constants.ERROR_CORRECT_L,
+    box_size=10,
+    border=4,
+)
 
 
 @app.route('/api/all')
@@ -159,6 +167,23 @@ def search_result(collection, column, search):
     cursor.close()
     connection.close()
     return json.dumps(data)
+
+
+# TODO: create route to generate QR code
+@app.route('/api/<collection>/<drawer_letter>')
+def drawer_search(collection_name, drawer_letter):
+    column_type = "drawer"
+    return redirect(
+        url_for('search_result', collection=str(collection_name), column=str(column_type), search=str(drawer_letter)))
+
+
+@app.route('/api/generate/<collection>/<drawer>')
+def generate_qrcode(collection, drawer):
+    url = f'/api/{collection}/{drawer}'
+    qr_code.add_data(url)
+    qr_code.make(fit=True)
+    img = qr_code.make_image(fill_color="black", back_color="white")
+    return send_file(img, as_attachment=True), 200
 
 
 @app.route('/api/file/<collection>/<catalog>/<image>', methods=['POST', 'GET'])
