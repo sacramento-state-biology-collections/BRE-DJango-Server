@@ -1,4 +1,4 @@
-from flask import Flask, send_file, request
+from flask import Flask, send_file, request, redirect, url_for
 import psycopg2 as pg
 from psycopg2.extras import RealDictCursor
 from flask_cors import CORS
@@ -7,8 +7,9 @@ import json
 import pandas as pd
 from subprocess import Popen, PIPE
 import base64
-from Crypto.Cipher import AES
-from Crypto.Util.Padding import unpad
+import qrcode as qr
+from crypto.Cipher import AES
+from crypto.Util.Padding import unpad
 
 app = Flask(__name__, static_url_path='/static')
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
@@ -20,6 +21,14 @@ settings = {
     "database": "biologydb",
 }
 key = 'cscgluewaregrems'
+
+qr_code = qr.QRCode(
+    version=1,
+    error_correction=qr.constants.ERROR_CORRECT_L,
+    box_size=10,
+    border=4,
+)
+
 
 @app.route('/api/all')
 def Root():
@@ -206,6 +215,24 @@ def search_result(collection, column, search):
     connection.close()
     return json.dumps(data)
 
+
+# TODO: create route to generate QR code
+@app.route('/api/<collection>/<drawer_letter>')
+def drawer_search(collection_name, drawer_letter):
+    column_type = "drawer"
+    return redirect(
+        url_for('search_result', collection=str(collection_name), column=str(column_type), search=str(drawer_letter)))
+
+
+@app.route('/api/generate/<collection>/<drawer>')
+def generate_qrcode(collection, drawer):
+    url = f'/api/{collection}/{drawer}'
+    qr_code.add_data(url)
+    qr_code.make(fit=True)
+    img = qr_code.make_image(fill_color="black", back_color="white")
+    return send_file(img, as_attachment=True), 200
+
+
 @app.route('/api/file/<collection>/<catalog>/<image>', methods=['POST', 'GET'])
 def upload_file(catalog: str, collection: str, image):
     # Connect to database
@@ -253,7 +280,7 @@ def login():
     tmp_key = key
     enc = base64.b64decode(data['password'])
     cipher = AES.new(tmp_key.encode('utf-8'), AES.MODE_ECB)
-    password = unpad(cipher.decrypt(enc),16).decode('utf-8')
+    password = unpad(cipher.decrypt(enc), 16).decode('utf-8')
     username = data['username']
     # TODO: check if user exists in database
     connection = pg.connect(
@@ -296,5 +323,8 @@ def testing():
 @app.route('/<path>:<path>')
 def StaticFile(path):
     return app.send_static_file(path)
+
+# TODO: create route to generate QR code
+# search query = SELECT * FROM mammals_collection WHERE drawer = 'H';
 
 app.run(host='0.0.0.0', port=9001)
