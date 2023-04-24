@@ -11,16 +11,16 @@ import qrcode as qr
 from crypto.Cipher import AES
 from crypto.Util.Padding import unpad
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static')
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 settings = {
     "host": "",
     "user": "postgres",
-    "password": "",
-    "port": "5432",
+    "password": "glueware@grems",
+    "port": "",
     "database": "biologydb",
 }
-key = ''
+key = 'cscgluewaregrems'
 
 qr_code = qr.QRCode(
     version=1,
@@ -92,8 +92,8 @@ def GetXlsx(database):
     cursor.close()
     connection.close()
     dataframe = pd.DataFrame(data)
-    dataframe.to_excel(f'uploads/{database}.xlsx', index=False)
-    filepath = f'uploads/{database}.xlsx'
+    dataframe.to_excel(f'/home/grem/uploads/{database}.xlsx', index=False)
+    filepath = f'/home/grem/uploads/{database}.xlsx'
     # END creation of xlsx file from database
     return send_file(f'{filepath}', as_attachment=True)
 
@@ -151,6 +151,53 @@ def PostXlsx(database):
     elif status == 'Failed':
         return "Failed", 500
 
+@app.route('/api/<collection>/', methods=['GET'])
+def search_all(collection):
+    connection = pg.connect(
+        host=settings["host"],
+        user=settings["user"],
+        password=settings["password"],
+        port=settings["port"],
+        database=settings["database"]
+    )
+    cursor = connection.cursor(cursor_factory=RealDictCursor)
+    cursor.execute(f"SELECT * FROM {collection}")
+    data = cursor.fetchall()
+    cursor.close()
+    connection.close()
+    return json.dumps(data)
+
+@app.route('/api/edit/<collection>', methods=['GET'])
+def sea(collection):
+    connection = pg.connect(
+        host=settings["host"],
+        user=settings["user"],
+        password=settings["password"],
+        port=settings["port"],
+        database=settings["database"]
+    )
+    cursor = connection.cursor(cursor_factory=RealDictCursor)
+    cursor.execute(f"SELECT catalog,common_name FROM {collection}")
+    data = cursor.fetchall()
+    cursor.close()
+    connection.close()
+    return json.dumps(data)
+
+@app.route('/api/<collection>/<search>', methods=['GET'])
+def search_result_multirow(collection, search):
+    connection = pg.connect(
+        host=settings["host"],
+        user=settings["user"],
+        password=settings["password"],
+        port=settings["port"],
+        database=settings["database"]
+    )
+    cursor = connection.cursor(cursor_factory=RealDictCursor)
+    cursor.execute(f"SELECT * FROM {collection} WHERE common_name ILIKE '%{search}%' OR scientific_name ILIKE '%{search}%'")
+    data = cursor.fetchall()
+    cursor.close()
+    connection.close()
+    return json.dumps(data)
 
 @app.route('/api/<collection>/<column>/<search>', methods=['GET'])
 def search_result(collection, column, search):
@@ -252,6 +299,30 @@ def login():
         return json.dumps({'message': 'Failed'}), 500
     return json.dumps({'message': 'Success'}), 200
 
+@app.route('/api/<collection>', methods=['GET'])
+def get_collection(collection):
+    connection = pg.connect(
+        host=settings["host"],
+        user=settings["user"],
+        password=settings["password"],
+        port=settings["port"],
+        database=settings["database"]
+    )
+    cursor = connection.cursor(cursor_factory=RealDictCursor)
+    cursor.execute(f"SELECT catalog,common_name FROM {collection}")
+    data = cursor.fetchall()
+    cursor.close()
+    connection.close()
+    return json.dumps(data), 200
+
+@app.route('/api/testing', methods=['GET'])
+def testing():
+    return app.send_static_file('test.html')
+
+
+@app.route('/<path>:<path>')
+def StaticFile(path):
+    return app.send_static_file(path)
 
 # TODO: create route to generate QR code
 # search query = SELECT * FROM mammals_collection WHERE drawer = 'H';
