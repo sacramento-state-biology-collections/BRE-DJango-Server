@@ -209,7 +209,7 @@ def search_result(collection, column, search):
         database=settings["database"]
     )
     cursor = connection.cursor(cursor_factory=RealDictCursor)
-    cursor.execute(f"SELECT * FROM {collection} WHERE {column} LIKE '%{search}%'")
+    cursor.execute(f"SELECT * FROM {collection} WHERE {column}='{search}'")
     data = cursor.fetchall()
     cursor.close()
     connection.close()
