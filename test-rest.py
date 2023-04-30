@@ -106,7 +106,7 @@ def PostXlsx(database):
     if 'file' not in request.files:
         return "No file part", 500
     file = request.files['file']
-    file.save(os.path.join('uploads', file.filename))
+    file.save(os.path.join('home/grem/uploads', file.filename))
     # TODO BEGIN udate database from xlsx file
     dataframe = pd.read_excel(f'uploads/{database}.xlsx')
     columns = dataframe.columns
