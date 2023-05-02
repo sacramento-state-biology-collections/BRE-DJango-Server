@@ -322,6 +322,9 @@ def testing():
 
 @app.route('/<path>:<path>')
 def StaticFile(path):
+    # if desired file is not found in images folder, return default image
+    if not os.path.isfile(f'./{path}'):
+        return app.send_static_file('images/default.jpg')
     return app.send_static_file(path)
 
 # TODO: create route to generate QR code
