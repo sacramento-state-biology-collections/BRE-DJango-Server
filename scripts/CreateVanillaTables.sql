@@ -4,7 +4,8 @@ CREATE TABLE IF NOT EXISTS mammals_Collection
     common_name TEXT,
     scientific_name TEXT,
     prep_type TEXT,
-    drawer TEXT
+    drawer TEXT,
+    image TEXT
 );
 
 CREATE TABLE IF NOT EXISTS herps_Collection
@@ -13,7 +14,8 @@ CREATE TABLE IF NOT EXISTS herps_Collection
     common_name TEXT,
     scientific_name TEXT,
     prep_type TEXT,
-    drawer TEXT
+    drawer TEXT,
+    image TEXT
 );
 
 CREATE TABLE IF NOT EXISTS insects_Collection
@@ -22,7 +24,8 @@ CREATE TABLE IF NOT EXISTS insects_Collection
     common_name TEXT,
     scientific_name TEXT,
     prep_type TEXT,
-    drawer TEXT
+    drawer TEXT,
+    image TEXT
 );
 
 CREATE TABLE IF NOT EXISTS fish_Collection
@@ -31,7 +34,8 @@ CREATE TABLE IF NOT EXISTS fish_Collection
     common_name TEXT,
     scientific_name TEXT,
     prep_type TEXT,
-    drawer TEXT
+    drawer TEXT,
+    image TEXT
 );
 
 CREATE TABLE IF NOT EXISTS vivarium_Collection
@@ -40,7 +44,8 @@ CREATE TABLE IF NOT EXISTS vivarium_Collection
     common_name TEXT,
     scientific_name TEXT,
     prep_type TEXT,
-    drawer TEXT
+    drawer TEXT,
+    image TEXT
 );
 
 CREATE TABLE IF NOT EXISTS green_House_Collection
@@ -49,7 +54,8 @@ CREATE TABLE IF NOT EXISTS green_House_Collection
     common_name TEXT,
     scientific_name TEXT,
     prep_type TEXT,
-    drawer TEXT
+    drawer TEXT,
+    image TEXT
 );
 
 CREATE TABLE IF NOT EXISTS arboretum_Collection
@@ -58,7 +64,8 @@ CREATE TABLE IF NOT EXISTS arboretum_Collection
     common_name TEXT,
     scientific_name TEXT,
     prep_type TEXT,
-    drawer TEXT
+    drawer TEXT,
+    image TEXT
 );
 
 CREATE TABLE IF NOT EXISTS herbarium_Collection
@@ -67,7 +74,8 @@ CREATE TABLE IF NOT EXISTS herbarium_Collection
     common_name TEXT,
     scientific_name TEXT,
     prep_type TEXT,
-    drawer TEXT
+    drawer TEXT,
+    image TEXT
 );
 
 CREATE TABLE IF NOT EXISTS users
@@ -80,3 +88,4 @@ CREATE TABLE IF NOT EXISTS users
 );
 
 INSERT INTO users (username, password, email, first_name, last_name) VALUES ('admin', 'f7b539a46ea30c6cac6789eeb6ddaf0a', 'admin@localhost', 'Admin', 'Admin');
+INSERT INTO mammals_Collection (catalog, common_name, scientific_name, prep_type, drawer, image) VALUES ('M001', 'American Bison', 'Bison bison', 'Skull', 'Mammals', 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Bison_bison_skull.jpg/220px-Bison_bison_skull.jpg');

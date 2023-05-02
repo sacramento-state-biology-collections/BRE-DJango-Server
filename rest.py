@@ -314,9 +314,27 @@ def get_collection(collection):
 def testing():
     return app.send_static_file('test.html')
 
+@app.route('/api/entry/<collection>/<catalog>/<column>/<data>', methods=['POST'])
+def post_entry(collection, catalog, column, data):
+    connection = pg.connect(
+        host=settings["host"],
+        user=settings["user"],
+        password=settings["password"],
+        port=settings["port"],
+        database=settings["database"]
+    )
+    cursor = connection.cursor(cursor_factory=RealDictCursor)
+    cursor.execute(f"UPDATE {collection} SET {column}='{data}' WHERE catalog='{catalog}'")
+    cursor.close()
+    connection.close()
+    if 'file' in request.files:
+        f = request.files['file']
+        f.save(os.path.join('static', f.filename))
+    return "Success", 200
+
 @app.route('/<path>')
 def StaticFile(path):
-    if not os.path.isfile(path):
+    if not os.path.isfile('static/' + path):
         return app.send_static_file('no_image.svg')
     return app.send_static_file(path)
 
