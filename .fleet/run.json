@@ -1,9 +1,0 @@
-{
-    "configurations": [
-        {
-            "type": "python",
-            "name": "test-rest.py",
-            "file": "test-rest.py"
-        }
-    ]
-}

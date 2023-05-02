@@ -1,7 +1,0 @@
-crypto==1.4.1
-Flask==2.2.3
-Flask_Cors==3.0.10
-pandas==1.4.4
-psycopg2==2.9.6
-psycopg2_binary==2.9.5
-qrcode==7.3.1
