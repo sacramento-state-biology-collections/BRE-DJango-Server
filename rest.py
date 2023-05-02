@@ -13,13 +13,8 @@ from Crypto.Util.Padding import unpad
 
 app = Flask(__name__, static_url_path='/static')
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
-settings = {
-    "host": "",
-    "user": "",
-    "password": "",
-    "port": "",
-    "database": "",
-}
+with open('config.json') as f:
+    settings = json.load(f)
 key = 'cscgluewaregrems'
 
 qr_code = qr.QRCode(
