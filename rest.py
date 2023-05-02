@@ -103,7 +103,7 @@ def PostXlsx(database):
     file = request.files['file']
     file.save(os.path.join('uploads', file.filename))
     # TODO BEGIN udate database from xlsx file
-    dataframe = pd.read_excel(f'uploads/{database}.xlsx')
+    dataframe = pd.read_excel(f'uploads/{database}.xlsx', engine='openpyxl')
     columns = dataframe.columns
     sql_primary_key = f'{columns[0]} varchar(4) PRIMARY KEY,'
     columns = columns[1:]
