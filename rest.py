@@ -15,10 +15,10 @@ app = Flask(__name__, static_url_path='/static')
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 settings = {
     "host": "",
-    "user": "postgres",
-    "password": "glueware@grems",
+    "user": "",
+    "password": "",
     "port": "",
-    "database": "biologydb",
+    "database": "",
 }
 key = 'cscgluewaregrems'
 
