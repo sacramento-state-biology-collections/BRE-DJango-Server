@@ -8,17 +8,17 @@ import pandas as pd
 from subprocess import Popen, PIPE
 import base64
 import qrcode as qr
-from crypto.Cipher import AES
-from crypto.Util.Padding import unpad
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import unpad
 
 app = Flask(__name__, static_url_path='/static')
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 settings = {
     "host": "",
-    "user": "postgres",
-    "password": "glueware@grems",
+    "user": "",
+    "password": "",
     "port": "",
-    "database": "biologydb",
+    "database": "",
 }
 key = 'cscgluewaregrems'
 
@@ -92,8 +92,8 @@ def GetXlsx(database):
     cursor.close()
     connection.close()
     dataframe = pd.DataFrame(data)
-    dataframe.to_excel(f'/home/grem/uploads/{database}.xlsx', index=False)
-    filepath = f'/home/grem/uploads/{database}.xlsx'
+    dataframe.to_excel(f'uploads/{database}.xlsx', index=False)
+    filepath = f'uploads/{database}.xlsx'
     # END creation of xlsx file from database
     return send_file(f'{filepath}', as_attachment=True)
 
@@ -209,7 +209,7 @@ def search_result(collection, column, search):
         database=settings["database"]
     )
     cursor = connection.cursor(cursor_factory=RealDictCursor)
-    cursor.execute(f"SELECT * FROM {collection} WHERE {column} LIKE '%{search}%'")
+    cursor.execute(f"SELECT * FROM {collection} WHERE {column}='{search}'")
     data = cursor.fetchall()
     cursor.close()
     connection.close()
@@ -319,12 +319,10 @@ def get_collection(collection):
 def testing():
     return app.send_static_file('test.html')
 
-
-@app.route('/<path>:<path>')
+@app.route('/<path>')
 def StaticFile(path):
-    # if desired file is not found in images folder, return default image
-    if not os.path.isfile(f'./{path}'):
-        return app.send_static_file('images/no_image.svg')
+    if not os.path.isfile(path):
+        return app.send_static_file('no_image.svg')
     return app.send_static_file(path)
 
 # TODO: create route to generate QR code
