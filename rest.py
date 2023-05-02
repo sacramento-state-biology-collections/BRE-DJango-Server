@@ -92,8 +92,8 @@ def GetXlsx(database):
     cursor.close()
     connection.close()
     dataframe = pd.DataFrame(data)
-    dataframe.to_excel(f'/home/grem/uploads/{database}.xlsx', index=False)
-    filepath = f'/home/grem/uploads/{database}.xlsx'
+    dataframe.to_excel(f'uploads/{database}.xlsx', index=False)
+    filepath = f'uploads/{database}.xlsx'
     # END creation of xlsx file from database
     return send_file(f'{filepath}', as_attachment=True)
 
@@ -106,7 +106,7 @@ def PostXlsx(database):
     if 'file' not in request.files:
         return "No file part", 500
     file = request.files['file']
-    file.save(os.path.join('home/grem/uploads', file.filename))
+    file.save(os.path.join('uploads', file.filename))
     # TODO BEGIN udate database from xlsx file
     dataframe = pd.read_excel(f'uploads/{database}.xlsx')
     columns = dataframe.columns
@@ -318,7 +318,6 @@ def get_collection(collection):
 @app.route('/api/testing', methods=['GET'])
 def testing():
     return app.send_static_file('test.html')
-
 
 @app.route('/<path>')
 def StaticFile(path):
