@@ -271,7 +271,8 @@ def upload_file(catalog: str, collection: str, image):
         f = request.files['file']
         print(f)
         f.save(os.path.join(parent_dir, f.filename))
-        cursor.execute(f"UPDATE {collection} SET file_name = {f.filename} WHERE catalog = '{catalog}'; ")
+        collection=collection.lower()
+        cursor.execute(f"UPDATE {collection} SET image={f.filename} WHERE catalog='{catalog}'")
         cursor.close()
         connection.close()
         return "file saved", 200
@@ -279,7 +280,7 @@ def upload_file(catalog: str, collection: str, image):
     # GET protocol
     elif request.method == 'GET':
         # TODO: get file from server and send it to client
-        cursor.execute(f'SELECT file_name from {collection} WHERE catalog LIKE ' % {catalog} % ' ')
+        cursor.execute(f'SELECT image from {collection} WHERE catalog LIKE ' % {catalog} % ' ')
         filen = cursor.fetchall()
         pwd = Popen(f"find {parent_dir} -name {filen} 2>/dev/null", shell=True, stdout=PIPE).communicate()[0]
         pwd = pwd.decode('utf-8')
