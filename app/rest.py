@@ -13,7 +13,7 @@ from Crypto.Util.Padding import unpad
 
 app = Flask(__name__, static_url_path='/static')
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
-with open('config.json') as f:
+with open('/app/config.json') as f:
     settings = json.load(f)
 key = 'cscgluewaregrems'
 
@@ -100,6 +100,25 @@ def PostXlsx(database):
         return "Database not valid", 500
     if 'file' not in request.files:
         return "No file part", 500
+    # create folder if not exist
+    if not os.path.exists(f'static/history/{database}'):
+        os.makedirs(f'static/history/{database}')
+    connection = pg.connect(
+        host=settings["host"],
+        user=settings["user"],
+        password=settings["password"],
+        port=settings["port"],
+        database=settings["database"]
+    )
+    cursor = connection.cursor(cursor_factory=RealDictCursor)
+    cursor.execute(f'SELECT * FROM {database}_collection')
+    data = cursor.fetchall()
+    cursor.close()
+    connection.close()
+    dataframe = pd.DataFrame(data)
+    time = pd.Timestamp.now()
+    time = time.strftime("%m-%d-%Y-%H-%M-%S")
+    dataframe.to_excel(f'static/history/{database}/{time}_{database}.xlsx', index=False)
     file = request.files['file']
     file.save(os.path.join('uploads', file.filename))
     # TODO BEGIN udate database from xlsx file
@@ -332,11 +351,25 @@ def post_entry(collection, catalog, column, data):
         f.save(os.path.join('static', f.filename))
     return "Success", 200
 
-@app.route('/<path>')
+@app.route('/<path>', methods=['GET'])
 def StaticFile(path):
     if not os.path.isfile('static/' + path):
         return app.send_static_file('no_image.svg')
     return app.send_static_file(path)
+
+@app.route('/api/files/history/<collection>', methods=['GET'])
+def get_history_collection(collection):
+    collection = collection.lower()
+    if not os.path.isdir(f'/static/history/{collection}'):
+        return "No history found", 500
+    return json.dumps(os.listdir(f'/static/history/{collection}')), 200
+
+@app.route('/api/file/history/<collection>/<file>', methods=['GET'])
+def get_history(collection, file):
+    collection = collection.lower()
+    if not os.path.isfile(f'/static/history/{collection}/{file}'):
+        return "No history found", 500
+    return send_file(f'/static/history/{collection}/{file}', as_attachment=True), 200
 
 # TODO: create route to generate QR code
 # search query = SELECT * FROM mammals_collection WHERE drawer = 'H';
