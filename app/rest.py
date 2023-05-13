@@ -70,7 +70,7 @@ def PostgresHealth():
 
 @app.route('/api/getxlsx/<database>', methods=['GET'])
 def GetXlsx(database):
-    databases = ['mammals', 'fish', 'herps', 'insects', 'test']
+    databases = ['mammals', 'fish', 'herps', 'insects', 'vivarium', 'green_house', 'arboretum', 'herbarium']
     if database not in databases:
         return "Database not valid", 500
     # BEGIN creation of xlsx file from database
@@ -87,15 +87,15 @@ def GetXlsx(database):
     cursor.close()
     connection.close()
     dataframe = pd.DataFrame(data)
-    dataframe.to_excel(f'uploads/{database}.xlsx', index=False)
-    filepath = f'uploads/{database}.xlsx'
+    dataframe.to_excel(f'/uploads/{database}.xlsx', index=False)
+    filepath = f'/uploads/{database}.xlsx'
     # END creation of xlsx file from database
     return send_file(f'{filepath}', as_attachment=True)
 
 
 @app.route('/api/postxlsx/<database>', methods=['POST'])
 def PostXlsx(database):
-    databases = ['mammals', 'fish', 'herps', 'insects', 'test']
+    databases = ['mammals', 'fish', 'herps', 'insects', 'vivarium', 'green_house', 'arboretum', 'herbarium']
     if database not in databases:
         return "Database not valid", 500
     if 'file' not in request.files:
@@ -122,7 +122,7 @@ def PostXlsx(database):
     file = request.files['file']
     file.save(os.path.join('uploads', file.filename))
     # TODO BEGIN udate database from xlsx file
-    dataframe = pd.read_excel(f'uploads/{database}.xlsx', engine='openpyxl')
+    dataframe = pd.read_excel(f'/uploads/{database}.xlsx', engine='openpyxl')
     columns = dataframe.columns
     sql_primary_key = f'{columns[0]} varchar(4) PRIMARY KEY,'
     columns = columns[1:]
@@ -313,7 +313,7 @@ def login():
         return json.dumps({'message': 'Failed'}), 500
     return json.dumps({'message': 'Success'}), 200
 
-@app.route('/api/<collection>', methods=['GET'])
+@app.route('/api/<collection>/catalog/common_name', methods=['GET'])
 def get_collection(collection):
     connection = pg.connect(
         host=settings["host"],
@@ -348,14 +348,14 @@ def post_entry(collection, catalog, column, data):
     connection.close()
     if 'file' in request.files:
         f = request.files['file']
-        f.save(os.path.join('static', f.filename))
+        f.save('/static/' + f.filename)
     return "Success", 200
 
 @app.route('/<path>', methods=['GET'])
 def StaticFile(path):
-    if not os.path.isfile('static/' + path):
-        return app.send_static_file('no_image.svg')
-    return app.send_static_file(path)
+    if not os.path.isfile('/static/' + path):
+        return send_file('/static/no_image.svg')
+    return send_file('/static/' + path)
 
 @app.route('/api/files/history/<collection>', methods=['GET'])
 def get_history_collection(collection):
